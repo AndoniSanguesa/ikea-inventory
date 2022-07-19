@@ -127,4 +127,19 @@ with open("ikea_inventory.json", "w") as f:
 if not any(changes):
     exit()
 
+# Creates body of email to send
+subject = "IKEA Inventory Update"
+body = "Changes:\n"
 
+for i, change in enumerate(changes):
+    if change == 2:
+        body += f"New Item : {names[i]}\n"
+    elif change == -1:
+        body += f"Item Unvailable : {names[i]}\n"
+    elif change == 1:
+        body += f"Item Available : {names[i]} - Item Available\n"
+
+body += "\n\nAll Items:\n"
+
+for i, item in enumerate(names):
+    body += f"{'Available' if results[i] else 'Unavailable'} : {names[i]}\n"
