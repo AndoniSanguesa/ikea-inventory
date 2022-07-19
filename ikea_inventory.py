@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 import time
+import os
 
 # TEMPORARY: Using Chrome Beta 104 until version compatible with Selenium is released
 options = Options()
@@ -101,5 +102,29 @@ for item in items_to_check:
 # Closes driver
 selenium_driver.close()
 
-while True:
-    pass
+changes = [0]*len(results)
+
+# Generates a list of changes in availability since the last query
+if "ikea_inventory.json" not in os.listdir():
+    changes = [1]*len(results)
+else:
+    with open("ikea_inventory.json", "r") as f:
+        old_data = json.load(f)
+        for i, item in enumerate(items_to_check):
+            if item not in old_data["items"]:
+                changes[i] = 2
+                continue
+            if old_data["results"][old_data["items"].index(item)] != results[i]:
+                changes[i] = -1 if not results[i] else 1
+                continue
+            else:
+                changes[i] = 0
+
+# Updates the stored JSON file
+with open("ikea_inventory.json", "w") as f:
+    json.dump({"items": items_to_check, "results": results, "names": names}, f)
+
+if not any(changes):
+    exit()
+
+
