@@ -23,8 +23,10 @@ base_url = "https://www.ikea.com/us/en/p/-"
 # Creates webdriver Object 
 selenium_driver = webdriver.Chrome(chrome_options=options)
 
+# Opens Main IKEA page
 selenium_driver.get("https://www.ikea.com/us/en/")
 
+# Sets the nearest IKEA store to Renton, WA
 selenium_driver.find_element(By.CLASS_NAME, "delivery-button").click()
 
 found = False
@@ -51,6 +53,7 @@ while not found:
     except NoSuchElementException:
         time.sleep(0.1)
 
+# Sets the Zip Code to 98119
 selenium_driver.find_elements(By.CLASS_NAME, "delivery-button")[1].click()
 
 found = False
@@ -67,10 +70,12 @@ delivery_input.send_keys("98119")
 time.sleep(0.5)
 delivery_input.send_keys(Keys.ENTER)
 
-
+# Checks availability of each item
 for item in items_to_check:
+    # Goes to the item listing
     selenium_driver.get(base_url + item)
 
+    # Waits for availability information to load
     found = False
 
     while not found:
@@ -81,21 +86,19 @@ for item in items_to_check:
         except NoSuchElementException:
             time.sleep(0.1)
 
+    # Checks if item is available and stores result
     if "red" in availablity:
         results.append(False)
     else:
         results.append(True)
 
+    # Stores item name and description
     main_name = selenium_driver.find_element(By.CLASS_NAME, "pip-header-section__title--big").text
     description = selenium_driver.find_element(By.CLASS_NAME, "pip-header-section__description-text").text
 
     names.append(f"{main_name} - {description}")
 
-    print(f"{main_name} - {description} : {availablity}")
-
-for i, name in enumerate(names):
-    print(f"{name}: {results[i]}")
-
+# Closes driver
 selenium_driver.close()
 
 while True:
