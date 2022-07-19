@@ -1,0 +1,3 @@
+[submodule "chrome-selenium-updater"]
+	path = chrome-selenium-updater
+	url = https://github.com/AndoniSanguesa/chrome-selenium-updater
