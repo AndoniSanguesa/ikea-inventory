@@ -74,6 +74,7 @@ delivery_input.click()
 delivery_input.send_keys("98119")
 time.sleep(0.5)
 delivery_input.send_keys(Keys.ENTER)
+time.sleep(0.5)
 
 # Checks availability of each item
 for item in items_to_check:
