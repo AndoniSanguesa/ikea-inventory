@@ -1,2 +1,3 @@
 chrome_selenium_updater/__pycache__/
 ikea_inventory.json
+.env

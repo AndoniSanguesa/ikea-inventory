@@ -1,12 +1,16 @@
 from selenium import webdriver
 import json
 import chrome_selenium_updater.selenium_updater as updater
+from email_relay.email_client import EmailClient
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
+import dotenv
 import time
 import os
+
+dotenv.load_dotenv()
 
 # TEMPORARY: Using Chrome Beta 104 until version compatible with Selenium is released
 options = Options()
@@ -137,9 +141,15 @@ for i, change in enumerate(changes):
     elif change == -1:
         body += f"Item Unvailable : {names[i]}\n"
     elif change == 1:
-        body += f"Item Available : {names[i]} - Item Available\n"
+        body += f"Item Available : {names[i]}\n"
 
 body += "\n\nAll Items:\n"
 
 for i, item in enumerate(names):
     body += f"{'Available' if results[i] else 'Unavailable'} : {names[i]}\n"
+
+# Creates Email Client Object and sends email request
+email_client = EmailClient()
+email_client.connect(os.getenv("HOST"), int(os.getenv("PORT")))
+email_client.send(os.getenv("EMAIL"), subject, body)
+email_client.close()

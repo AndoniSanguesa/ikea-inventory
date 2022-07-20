@@ -1,3 +1,6 @@
 [submodule "chrome_selenium_updater"]
 	path = chrome_selenium_updater
 	url = https://github.com/AndoniSanguesa/chrome-selenium-updater
+[submodule "email_relay"]
+	path = email_relay
+	url = https://github.com/AndoniSanguesa/email-relay
