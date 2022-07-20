@@ -110,7 +110,7 @@ changes = [0]*len(results)
 
 # Generates a list of changes in availability since the last query
 if "ikea_inventory.json" not in os.listdir():
-    changes = [1]*len(results)
+    changes = [2]*len(results)
 else:
     with open("ikea_inventory.json", "r") as f:
         old_data = json.load(f)
